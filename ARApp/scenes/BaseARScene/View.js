@@ -2,8 +2,12 @@ import React, { useState } from 'react';
 import { 
     ViroARScene,
     ViroText,
-    ViroConstants
+    ViroConstants,
+    Viro3DObject,
+    ViroAmbientLight
 } from 'react-viro';
+
+import LogOBJ from '../../assets/log.obj';
 
 let timeout = null;
 
@@ -17,7 +21,7 @@ const View = props => {
                 timeout = null;
             }
             
-            setText('Hello AR');
+            setText('Find Some QR Code');
         } else if (state == ViroConstants.TRACKING_NONE && !timeout){
             timeout = setTimeout(() => setText(null), 300);
         }
@@ -25,10 +29,21 @@ const View = props => {
 
     return (
         <ViroARScene onTrackingUpdated={onTrackingUpdated} >
+            <ViroAmbientLight color="#FFFFFF" />
             <ViroText 
                 text={text || 'Tracking'}
                 scale={[.5, .5, .5]} 
-                position={[0, 0, -1]} 
+                position={[0, .1, -0.6]} 
+            />
+            <Viro3DObject 
+                source={LogOBJ}
+                highAccuracyEvents={true}
+                position={[-0.3, 0, -0.2]}
+                scale={[.0015, .0015, .0015]}
+                rotation={[90, 0, 0]}
+                type='OBJ'
+                // transformBehaviors={['billboard']}
+                onClick={(position, source) => console.log('Bt click!')}
             />
         </ViroARScene>
     );
