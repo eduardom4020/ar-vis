@@ -9,7 +9,8 @@ import {
     ViroPolyline,
     ViroNode,
     ViroSphere,
-    ViroMaterials
+    ViroMaterials,
+    ViroQuad
 } from 'react-viro';
 
 ViroMaterials.createMaterials({
@@ -25,22 +26,66 @@ ViroMaterials.createMaterials({
     axis: {
         diffuseColor: '#000000'
     }
+    // bg: {
+    //     shininess: 2.0,
+    //     diffuseColor: '#ffffff',
+    //     blendMode: 'Add',
+    //     bloomThreshold: 0.2
+    // },
 });
 
 const SERIES = [ [0,0,0], [.25,.5,0], [.5,.15,0], [.75,.25,0], [1,1,0] ];
-const xAxisRange = [0, 1];
+// const xAxisRange = [0, 1];
 const xAxisTicks = 5;
-const yAxisRange = [0, 1];
+// const yAxisRange = [0, 1];
 const yAxisTicks = 5;
+
+const normalize = series => {
+    const xPoints = series.map(point => point[0]);
+    const yPoints = series.map(point => point[1]);
+    const zPoints = series.map(point => point[2]);
+    
+    const maxX = Math.max(...xPoints);
+    const minX = Math.min(...xPoints);
+    const maxY = Math.max(...yPoints);
+    const minY = Math.min(...yPoints);
+    const maxZ = Math.max(...zPoints);
+    const minZ = Math.min(...zPoints);
+
+    return {
+        normSeries: series.map(point => ([
+            ((point[0] - minX) / (maxX - minX)) || 0,
+            ((point[1] - minY) / (maxY - minY)) || 0,
+            ((point[2] - minZ) / (maxZ - minZ)) || 0
+        ])),
+        xPoints, yPoints, zPoints,
+        maxX, minX,
+        maxY, minY,
+        maxZ, minZ
+    };
+}
 
 const LinePlot = props => {
     const { title, series=SERIES } = props;
+    const { normSeries, ...scale } = normalize(series);
+
+    console.log(normSeries)
+
+    const xAxisRange = [scale.minX, scale.maxX];
+    const yAxisRange = [scale.minY, scale.maxY];
 
     return (
         <ViroNode
             position={[-0.17, -.15, -0.6]}
             scale={[.25, .25, .25]}
         >
+            {/* <ViroQuad
+                position={[0, 0, 0]}
+                rotation={[90, 0, 0]}
+                height={1} 
+                width={1}
+                materials={['bg']}
+            /> */}
             <ViroText 
                 text={title}
                 scale={[.2, .2, .2]} 
@@ -48,12 +93,12 @@ const LinePlot = props => {
                 textAlign='center'
             />
             <ViroPolyline 
-                points={series} 
+                points={normSeries} 
                 thickness={0.005} 
                 materials='line' 
             />
             {
-                series.map(point => (
+                normSeries.map(point => (
                     <ViroSphere
                         heightSegmentCount={20}
                         widthSegmentCount={20}
@@ -66,13 +111,13 @@ const LinePlot = props => {
             {
                 xAxisRange &&
                     <ViroPolyline
-                        points={xAxisRange.map(xVal => [xVal, -.05, 0])} 
+                        points={[0, 1].map(xVal => [xVal, -.05, 0])} 
                         thickness={0.001} 
                         materials='axis' 
                     />
             }
             {
-                xAxisRange && new Array(xAxisTicks + 1).fill(Number((xAxisRange[1] - xAxisRange[0]) / xAxisTicks)).map((tick, index) => (
+                xAxisRange && new Array(xAxisTicks + 1).fill(Number(1 / xAxisTicks)).map((tick, index) => (
                     <ViroNode
                         position={[tick * index, -.05, 0]}
                     >
@@ -82,7 +127,7 @@ const LinePlot = props => {
                             materials='axis' 
                         />
                         <ViroText 
-                            text={String(tick * index).slice(0, 4)}
+                            text={String((xAxisRange[1] - xAxisRange[0]) * tick * index).slice(0, 4)}
                             scale={[.2, .2, .2]}
                             position={[0, -.1, 0]}
                             textAlign='center'
@@ -94,13 +139,13 @@ const LinePlot = props => {
             {
                 yAxisRange &&
                     <ViroPolyline
-                        points={yAxisRange.map(yVal => [-.05, yVal, 0])} 
+                        points={[0, 1].map(yVal => [-.05, yVal, 0])}
                         thickness={0.001} 
                         materials='axis' 
                     />
             }
             {
-                yAxisRange && new Array(yAxisTicks + 1).fill(Number((yAxisRange[1] - yAxisRange[0]) / yAxisTicks)).map((tick, index) => (
+                yAxisRange && new Array(yAxisTicks + 1).fill(Number(1 / yAxisTicks)).map((tick, index) => (
                     <ViroNode
                         position={[-.05, tick * index, 0]}
                     >
@@ -110,7 +155,7 @@ const LinePlot = props => {
                             materials='axis'  
                         />
                         <ViroText 
-                            text={String(tick * index).slice(0, 4)}
+                            text={String((yAxisRange[1] - yAxisRange[0]) * tick * index).slice(0, 4)}
                             scale={[.2, .2, .2]}
                             position={[-.12, -.08, 0]}
                             textAlign='right'

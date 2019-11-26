@@ -60,7 +60,10 @@ const View = props => {
     return (
         <ViroARScene onTrackingUpdated={onTrackingUpdated} >           
             <ViroAmbientLight color="#FFFFFF" />
-            <LinePlot title='Some Series' />
+            <LinePlot 
+                title='Some Series'
+                series={[[0, 5, 0], [3, 15, 0], [10, 2, 0], [11, 5, 0], [18, 8, 0], [20, 1, 0]]}
+            />
             {/* <ViroImage
                 height={.5}
                 width={.5}
