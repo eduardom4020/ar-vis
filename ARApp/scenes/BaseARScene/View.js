@@ -62,7 +62,7 @@ const View = props => {
             <ViroAmbientLight color="#FFFFFF" />
             <LinePlot 
                 title='Some Series'
-                series={[[0, 5, 0], [3, 15, 0], [10, 2, 0], [11, 5, 0], [18, 8, 0], [20, 1, 0]]}
+                series={[[0, 5, 0], [3, 15, 10], [10, 2, 10], [11, 5, 5], [18, 8, 0], [20, 1, 5]]}
             />
             {/* <ViroImage
                 height={.5}

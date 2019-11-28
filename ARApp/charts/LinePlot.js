@@ -39,11 +39,12 @@ const SERIES = [ [0,0,0], [.25,.5,0], [.5,.15,0], [.75,.25,0], [1,1,0] ];
 const xAxisTicks = 5;
 // const yAxisRange = [0, 1];
 const yAxisTicks = 5;
+const zAxisTicks = 5;
 
 const normalize = series => {
     const xPoints = series.map(point => point[0]);
     const yPoints = series.map(point => point[1]);
-    const zPoints = series.map(point => point[2]);
+    const zPoints = series.map(point => point.length > 2 ? point[2] : 0);
     
     const maxX = Math.max(...xPoints);
     const minX = Math.min(...xPoints);
@@ -69,10 +70,11 @@ const LinePlot = props => {
     const { title, series=SERIES } = props;
     const { normSeries, ...scale } = normalize(series);
 
-    console.log(normSeries)
+    const is3D = scale.maxZ - scale.minZ !== 0;
 
     const xAxisRange = [scale.minX, scale.maxX];
     const yAxisRange = [scale.minY, scale.maxY];
+    const zAxisRange = [scale.minZ, scale.maxZ];
 
     return (
         <ViroNode
@@ -159,6 +161,34 @@ const LinePlot = props => {
                             scale={[.2, .2, .2]}
                             position={[-.12, -.08, 0]}
                             textAlign='right'
+                            color='#000000'
+                        />
+                    </ViroNode>
+                ))
+            }
+            {
+                is3D && zAxisRange &&
+                    <ViroPolyline
+                        points={[0, 1].map(zVal => [-.05, -.05, zVal])}
+                        thickness={0.001} 
+                        materials='axis' 
+                    />
+            }
+            {
+                is3D && zAxisRange && new Array(zAxisTicks + 1).fill(Number(1 / zAxisTicks)).map((tick, index) => (
+                    <ViroNode
+                        position={[-.05, -.05, tick * index]}
+                    >
+                        <ViroPolyline
+                            points={[[0, 0, 0], [.01, 0, 0]]} 
+                            thickness={0.002} 
+                            materials='axis'  
+                        />
+                        <ViroText 
+                            text={String((zAxisRange[1] - zAxisRange[0]) * tick * index).slice(0, 4)}
+                            scale={[.2, .2, .2]}
+                            position={[.03, -.07, .01]}
+                            textAlign='center'
                             color='#000000'
                         />
                     </ViroNode>
