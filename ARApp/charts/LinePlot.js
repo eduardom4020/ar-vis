@@ -25,13 +25,13 @@ ViroMaterials.createMaterials({
     },
     axis: {
         diffuseColor: '#000000'
+    },
+    bg: {
+        // shininess: 2.0,
+        diffuseColor: '#ffffff',
+        // blendMode: 'Add',
+        // bloomThreshold: 0.8
     }
-    // bg: {
-    //     shininess: 2.0,
-    //     diffuseColor: '#ffffff',
-    //     blendMode: 'Add',
-    //     bloomThreshold: 0.2
-    // },
 });
 
 const SERIES = [ [0,0,0], [.25,.5,0], [.5,.15,0], [.75,.25,0], [1,1,0] ];
@@ -78,16 +78,41 @@ const LinePlot = props => {
 
     return (
         <ViroNode
-            position={[-0.17, -.15, -0.6]}
+            position={[0, 0, -0.5]}
             scale={[.25, .25, .25]}
         >
-            {/* <ViroQuad
-                position={[0, 0, 0]}
-                rotation={[90, 0, 0]}
-                height={1} 
-                width={1}
+            <ViroQuad
+                position={[.5, .55, -.15]}
+                // rotation={[90, 0, 0]}
+                height={1.4} 
+                width={1.3}
                 materials={['bg']}
-            /> */}
+                opacity={.4}
+            />
+            <ViroQuad
+                position={[.5, -.15, .55]}
+                rotation={[-90, 0, 0]}
+                height={1.4} 
+                width={1.3}
+                materials={['bg']}
+                opacity={.4}
+            />
+            <ViroQuad
+                position={[-.15, .55, .55]}
+                rotation={[0, 90, 0]}
+                height={1.4} 
+                width={1.4}
+                materials={['bg']}
+                opacity={.4}
+            />
+            <ViroQuad
+                position={[1.15, .55, .55]}
+                rotation={[0, -90, 0]}
+                height={1.4} 
+                width={1.4}
+                materials={['bg']}
+                opacity={.4}
+            />
             <ViroText 
                 text={title}
                 scale={[.2, .2, .2]} 
