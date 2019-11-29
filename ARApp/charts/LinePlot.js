@@ -146,14 +146,17 @@ const LinePlot = props => {
             {
                 xAxisRange && new Array(xAxisTicks + 1).fill(Number(1 / xAxisTicks)).map((tick, index) => (
                     <ViroNode
+                        key={`x-tick-${index}`}
                         position={[tick * index, -.05, 0]}
                     >
                         <ViroPolyline
+                            key={`x-tick-${index}-line`}
                             points={[[0, 0, 0], [0, .01, 0]]} 
                             thickness={0.002} 
                             materials='axis' 
                         />
                         <ViroText 
+                            key={`x-tick-${index}-text`}
                             text={String((xAxisRange[1] - xAxisRange[0]) * tick * index).slice(0, 4)}
                             scale={[.2, .2, .2]}
                             position={[0, -.1, 0]}
@@ -174,14 +177,17 @@ const LinePlot = props => {
             {
                 yAxisRange && new Array(yAxisTicks + 1).fill(Number(1 / yAxisTicks)).map((tick, index) => (
                     <ViroNode
+                        key={`y-tick-${index}`}
                         position={[-.05, tick * index, 0]}
                     >
                         <ViroPolyline
+                            key={`x-tick-${index}-line`}
                             points={[[0, 0, 0], [.01, 0, 0]]} 
                             thickness={0.002} 
                             materials='axis'  
                         />
                         <ViroText 
+                            key={`x-tick-${index}-text`}
                             text={String((yAxisRange[1] - yAxisRange[0]) * tick * index).slice(0, 4)}
                             scale={[.2, .2, .2]}
                             position={[-.12, -.08, 0]}
@@ -202,14 +208,17 @@ const LinePlot = props => {
             {
                 is3D && zAxisRange && new Array(zAxisTicks + 1).fill(Number(1 / zAxisTicks)).map((tick, index) => (
                     <ViroNode
+                        key={`z-tick-${index}`}
                         position={[-.05, -.05, tick * index]}
                     >
                         <ViroPolyline
+                            key={`x-tick-${index}-line`}
                             points={[[0, 0, 0], [.01, 0, 0]]} 
                             thickness={0.002} 
                             materials='axis'  
                         />
                         <ViroText 
+                            key={`x-tick-${index}-text`}
                             text={String((zAxisRange[1] - zAxisRange[0]) * tick * index).slice(0, 4)}
                             scale={[.2, .2, .2]}
                             position={[.03, -.07, .01]}

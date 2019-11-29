@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { 
     ViroARScene,
     ViroText,
@@ -13,11 +13,12 @@ import {
 } from 'react-viro';
 
 import LinePlot from '../../charts/LinePlot';
+import Marker from '../../charts/Marker';
 
 import LogOBJ from '../../assets/log.obj';
 // import Chart from '../../assets/chart-test.png';
 // console.log(Chart)
-let timeout = null;
+let interval = null;
 
 ViroMaterials.createMaterials({
     line: {
@@ -40,30 +41,76 @@ const xAxisTicks = 5;
 const yAxisRange = [0, 1];
 const yAxisTicks = 5;
 
+// let timeout = null;
+
 const View = props => {
     const { sceneNavigator } = props;
     const [ text, setText ] = useState();
+    const [ navigator, setNavigator ] = useState(); 
 
-    const onTrackingUpdated = (state, reason) => {
+    const ref = useRef();
+
+    useEffect(
+        () => {
+            if(ref && ref.current) {
+                setNavigator(ref.current);
+            }
+        },
+        [ ref ]
+    );
+
+    // const onTrackingUpdated = (state, reason) => {
+    //     console.log('Updated track')
     //     if (state == ViroConstants.TRACKING_NORMAL && text == null){
-    //         if(timeout) {
-    //             clearTimeout(timeout);
-    //             timeout = null;
+    //         if(ref && ref.current) {
+    //             ref.current.getCameraOrientationAsync()
+    //                 .then(orientation => {
+    //                     console.log(orientation)
+    //                 })
     //         }
-            
-    //         setText('Chart Test!');
-    //     } else if (state == ViroConstants.TRACKING_NONE && !timeout){
-    //         timeout = setTimeout(() => setText(null), 300);
-    //     }
-    }
+    //     } 
+    //     // else if (state == ViroConstants.TRACKING_NONE && !timeout){
+    // //         timeout = setTimeout(() => setText(null), 300);
+    // //     }
+    // }
+
+    // clearInterval(interval);
+    // useEffect(() => {
+    //     interval = setInterval(() => {
+    //         if(ref && ref.current) {
+    //             ref.current.getCameraOrientationAsync()
+    //                 .then(orientation => {
+    //                     // console.log(orientation.forward)
+    //                     ref.current.performARHitTestWithRay(orientation.forward).then((results)=>{
+    //                         const [ firstPlane ] = results.filter(res => res.type == "ExistingPlaneUsingExtent").map(res => res.transform);
+    //                         const { position } = firstPlane || {};
+    //                         console.log(position)
+    //                         // for (var i = 0; i < results.length; i++) {
+    //                         //     let result = results[i];
+    //                         //     // console.log(result.type)
+    //                         //     if (result.type == "ExistingPlaneUsingExtent") {
+    //                         //         setPointerTransform(result.transform);
+    //                         //     }
+    //                         // }
+    //                     })
+    //                 })
+    //         }
+    //     }, 200)
+    // });
+
+    // if(pointerTransform) {
+    //     console.log(pointerTransform.position)
+    // }
 
     return (
-        <ViroARScene onTrackingUpdated={onTrackingUpdated} >           
+        <ViroARScene ref={ref} /*onTrackingUpdated={onTrackingUpdated}*/ >           
             <ViroAmbientLight color="#FFFFFF" />
-            <LinePlot 
+            {/* <LinePlot 
                 title='Some Series'
                 series={[[0, 5, 0], [3, 15, 10], [10, 2, 10], [11, 5, 5], [18, 8, 0], [20, 1, 5]]}
-            />
+            /> */}
+            <Marker navigator={navigator}/>
+
             {/* <ViroImage
                 height={.5}
                 width={.5}
