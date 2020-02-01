@@ -46,6 +46,8 @@ const yAxisTicks = 5;
 const View = props => {
     const { sceneNavigator } = props;
     const [ text, setText ] = useState();
+    const [ trackingInfo, setTrackingInfo ] = useState({});
+    const [ cameraTransform, setCameraTransform ] = useState({});
     const [ navigator, setNavigator ] = useState(); 
 
     const ref = useRef();
@@ -59,20 +61,12 @@ const View = props => {
         [ ref ]
     );
 
-    // const onTrackingUpdated = (state, reason) => {
-    //     console.log('Updated track')
-    //     if (state == ViroConstants.TRACKING_NORMAL && text == null){
-    //         if(ref && ref.current) {
-    //             ref.current.getCameraOrientationAsync()
-    //                 .then(orientation => {
-    //                     console.log(orientation)
-    //                 })
-    //         }
-    //     } 
-    //     // else if (state == ViroConstants.TRACKING_NONE && !timeout){
-    // //         timeout = setTimeout(() => setText(null), 300);
-    // //     }
-    // }
+    const onTrackingUpdated = (state, reason) => {
+        console.log('Updated track')
+        setTrackingInfo({state, reason});
+    }
+
+    const onCameraTransformUpdate = cameraTransform => setCameraTransform(cameraTransform);
 
     // clearInterval(interval);
     // useEffect(() => {
@@ -103,13 +97,23 @@ const View = props => {
     // }
 
     return (
-        <ViroARScene ref={ref} /*onTrackingUpdated={onTrackingUpdated}*/ >           
+        <ViroARScene 
+            ref={ref} 
+            onTrackingUpdated={onTrackingUpdated}
+            onCameraTransformUpdate={onCameraTransformUpdate}
+        >           
             <ViroAmbientLight color="#FFFFFF" />
             {/* <LinePlot 
                 title='Some Series'
                 series={[[0, 5, 0], [3, 15, 10], [10, 2, 10], [11, 5, 5], [18, 8, 0], [20, 1, 5]]}
             /> */}
-            <Marker navigator={navigator}/>
+            {/* {
+                trackingInfo &&
+                    <Marker 
+                        navigator={navigator}
+                        trackingInfo={trackingInfo}
+                    />
+            } */}
 
             {/* <ViroImage
                 height={.5}
@@ -125,7 +129,7 @@ const View = props => {
                 rotation={[90, 0, 0]}
                 type='OBJ'
                 // transformBehaviors={['billboard']}
-                onClick={(position, source) => console.log('Took screenshot!') || sceneNavigator.takeScreenshot('test.jpg', true)}
+                onClick={(position, source) => sceneNavigator.takeScreenshot('test', true)}
             /> */}
         </ViroARScene>
     );
