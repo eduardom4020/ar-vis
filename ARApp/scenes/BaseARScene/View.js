@@ -16,6 +16,9 @@ import LinePlot from '../../charts/LinePlot';
 import Marker from '../../charts/Marker';
 
 import LogOBJ from '../../assets/log.obj';
+
+import Console from '../../ui/Console';
+
 // import Chart from '../../assets/chart-test.png';
 // console.log(Chart)
 let interval = null;
@@ -103,6 +106,15 @@ const View = props => {
             onCameraTransformUpdate={onCameraTransformUpdate}
         >           
             <ViroAmbientLight color="#FFFFFF" />
+
+            <Console 
+                logList={[
+                    'hello',
+                    'world'
+                ]}
+                position={[0, 0, -.4]}
+            />
+
             {/* <LinePlot 
                 title='Some Series'
                 series={[[0, 5, 0], [3, 15, 10], [10, 2, 10], [11, 5, 5], [18, 8, 0], [20, 1, 5]]}
@@ -124,12 +136,12 @@ const View = props => {
             {/* <Viro3DObject 
                 source={LogOBJ}
                 highAccuracyEvents={true}
-                position={[-0.3, 0, -0.2]}
+                position={[0, 0, -0.5]}
                 scale={[.0015, .0015, .0015]}
                 rotation={[90, 0, 0]}
                 type='OBJ'
                 // transformBehaviors={['billboard']}
-                onClick={(position, source) => sceneNavigator.takeScreenshot('test', true)}
+                // onClick={(position, source) => sceneNavigator.takeScreenshot('test', true)}
             /> */}
         </ViroARScene>
     );

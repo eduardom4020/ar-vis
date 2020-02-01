@@ -1,7 +1,7 @@
 import { AppRegistry } from 'react-native';
 import App from './App.js';
 
-window.console.log = texts => console.warn(texts);
+// window.console.log = texts => console.warn(texts);
 
 AppRegistry.registerComponent('ARApp', () => App);
 
