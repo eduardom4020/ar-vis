@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useReducer } from 'react';
 import { 
     ViroARScene,
     ViroText,
@@ -18,6 +18,7 @@ import Marker from '../../charts/Marker';
 import LogOBJ from '../../assets/log.obj';
 
 import Console from '../../ui/Console';
+import { useConsoleActions } from '../../redux/actions';
 
 // import Chart from '../../assets/chart-test.png';
 // console.log(Chart)
@@ -52,6 +53,8 @@ const View = props => {
     const [ trackingInfo, setTrackingInfo ] = useState({});
     const [ cameraTransform, setCameraTransform ] = useState({});
     const [ navigator, setNavigator ] = useState(); 
+
+    // const Console = useConsole({componentProps: {position: [0, 0, -.4]}});
 
     const ref = useRef();
 
@@ -99,21 +102,28 @@ const View = props => {
     //     console.log(pointerTransform.position)
     // }
 
+    // setInterval( () => { Console.log('test') }, 2000 )
+
+    const Console = useConsoleActions();
+
+    setTimeout(() => Console.log('hi!'), 2000);
+
     return (
         <ViroARScene 
             ref={ref} 
             onTrackingUpdated={onTrackingUpdated}
             onCameraTransformUpdate={onCameraTransformUpdate}
         >           
+            {/* { Console.instance } */}
             <ViroAmbientLight color="#FFFFFF" />
-
-            <Console 
+            <Console />
+            {/* <Console 
                 logList={[
                     'hello',
                     'world'
                 ]}
                 position={[0, 0, -.4]}
-            />
+            /> */}
 
             {/* <LinePlot 
                 title='Some Series'
