@@ -1,22 +1,22 @@
-import { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
+// import { useCallback } from 'react';
+// import { useDispatch } from 'react-redux';
 
-export const consoleLog = (...params) => ({
-    type: 'log',
-    logs: [...params]
-});
+// export const consoleLog = (...params) => ({
+//     type: 'log',
+//     logs: [...params]
+// });
 
-export const useConsoleActions = (params={}) => {
-    const dispatch = useDispatch();
+// export const useConsoleActions = (params={}) => {
+//     const dispatch = useDispatch();
 
-    const log = useCallback(
-        (...params) => dispatch( consoleLog(...params) ),
-        [ dispatch ]
-    );
+//     const log = useCallback(
+//         (...params) => dispatch( consoleLog(...params) ),
+//         [ dispatch ]
+//     );
 
-    const Console = {
-        log
-    };
+//     const Console = {
+//         log
+//     };
 
-    return Console;
-};
+//     return Console;
+// };

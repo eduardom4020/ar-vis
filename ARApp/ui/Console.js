@@ -1,5 +1,6 @@
 import React, { useState, useReducer, useCallback } from 'react';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
+import { connect } from 'react-redux'
 
 import { 
     ViroFlexView,
@@ -10,14 +11,14 @@ import {
     ViroVideo
 } from 'react-viro';
 
-export const consoleReducer = ( state={}, { type, logs=[] } ) => {
-    switch (type) {
-      case 'log':
-        return { ...state, logs: [...(state.logs || []), ...logs] };
-      default:
-        return state;
-    }
-};
+// export const consoleReducer = ( state={}, { type, logs=[] } ) => {
+//     switch (type) {
+//       case 'log':
+//         return { ...state, logs: [...(state.logs || []), ...logs] };
+//       default:
+//         return state;
+//     }
+// };
 
 const ConsoleLog = props => {
     const { text='', ...extraProps } = props;
@@ -35,11 +36,11 @@ const ConsoleLog = props => {
 };
 
 const Console = props => {
-    const { style, ...extraProps } = props;
+    const { style, logs, ...extraProps } = props;
     // const logTexts = logList.map(log => JSON.stringify(log));
 
     // const [ state ] = useReducer(consoleReducer, { logs: ['hello', 'world'] });
-    const logs = useSelector(state => state.logs);
+    // const logs = useSelector(state => state.logs);
 
     return (
         <ViroFlexView 
@@ -61,9 +62,15 @@ const Console = props => {
         { logs.map((logText, index) => <ConsoleLog text={logText} key={`log-${index}`} style={{flex: 1}}/>) }
         </ViroFlexView>
     );
-}
+};
 
-export default Console;
+const mapStateToProps = state => {
+    return {
+        logs: state.logs
+    }
+};
+
+export default connect(mapStateToProps)(Console);
 
 // export const useConsole = (props={}) => {
 //     const { componentProps={} } = props;

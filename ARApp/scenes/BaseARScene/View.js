@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useReducer } from 'react';
+import { connect } from 'react-redux'
 import { 
     ViroARScene,
     ViroText,
@@ -48,7 +49,7 @@ const yAxisTicks = 5;
 // let timeout = null;
 
 const View = props => {
-    const { sceneNavigator } = props;
+    const { sceneNavigator, consoleLog } = props;
     const [ text, setText ] = useState();
     const [ trackingInfo, setTrackingInfo ] = useState({});
     const [ cameraTransform, setCameraTransform ] = useState({});
@@ -104,9 +105,9 @@ const View = props => {
 
     // setInterval( () => { Console.log('test') }, 2000 )
 
-    const Console = useConsoleActions();
+    // const Console = useConsoleActions();
 
-    setTimeout(() => Console.log('hi!'), 2000);
+    setTimeout(() => consoleLog('hi!'), 2000);
 
     return (
         <ViroARScene 
@@ -157,4 +158,13 @@ const View = props => {
     );
 };
 
-export default View;
+const mapDispatchToProps = dispatch => {
+    return {
+        consoleLog: (...logs) => dispatch({
+            type: 'log',
+            logs
+        })
+    };
+};  
+
+export default connect(null, mapDispatchToProps)(View);
