@@ -41,10 +41,10 @@ const yAxisRange = [0, 1];
 const yAxisTicks = 5;
 
 const View = props => {
-    const { sceneNavigator } = props;
-    const [ text, setText ] = useState();
+    // const { sceneNavigator } = props;
+    // const [ text, setText ] = useState();
 
-    const onTrackingUpdated = (state, reason) => {
+    // const onTrackingUpdated = (state, reason) => {
     //     if (state == ViroConstants.TRACKING_NORMAL && text == null){
     //         if(timeout) {
     //             clearTimeout(timeout);
@@ -55,14 +55,17 @@ const View = props => {
     //     } else if (state == ViroConstants.TRACKING_NONE && !timeout){
     //         timeout = setTimeout(() => setText(null), 300);
     //     }
-    }
+    // }
+
+    const [ series, setSeries ] = useState([[0, 5, 0], [3, 15, 10], [10, 2, 10], [11, 5, 5], [18, 8, 0], [20, 1, 5]]);
+    // if(sceneNavigator && sceneNavigator.viroAppProps && sceneNavigator.viroAppProps.callback) sceneNavigator.viroAppProps.callback({series, setSeries});
 
     return (
-        <ViroARScene onTrackingUpdated={onTrackingUpdated} >           
+        <ViroARScene /*onTrackingUpdated={onTrackingUpdated}*/ >           
             <ViroAmbientLight color="#FFFFFF" />
             <LinePlot 
                 title='Some Series'
-                series={[[0, 5, 0], [3, 15, 10], [10, 2, 10], [11, 5, 5], [18, 8, 0], [20, 1, 5]]}
+                series={series}
             />
             {/* <ViroImage
                 height={.5}
@@ -80,6 +83,7 @@ const View = props => {
                 // transformBehaviors={['billboard']}
                 onClick={(position, source) => console.log('Took screenshot!') || sceneNavigator.takeScreenshot('test.jpg', true)}
             /> */}
+            
         </ViroARScene>
     );
 };
